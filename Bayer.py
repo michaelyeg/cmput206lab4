@@ -89,5 +89,6 @@ cv2.imwrite('rgb.jpg', rgb)
 plt.imshow(rgb), plt.title('rgb')
 plt.show()
 
+cv2.destroyAllWindows()
 
 # part II should be written here:
