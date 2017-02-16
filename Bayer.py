@@ -10,7 +10,7 @@ img = cv2.imread('PeppersBayerGray.bmp', 0)
 
 h, w = img.shape
 
-# our final image will be a 3 dimentional image with 3 channels
+# our final image will be a 3 dimensional image with 3 channels
 rgb = np.zeros((h,w,3),np.uint8);
 
 
