@@ -4,6 +4,17 @@ import math
 from matplotlib import pyplot as plt
 
 
+def normalize(array):
+    height, width = array.shape
+    for r in range(0, height):
+        for c in range(0, width):
+            if array[r][c] > 255:
+                array[r][c] = 255
+            elif array[r][c] < 0:
+                array[r][c]=0
+
+    return array
+
 # part I
 
 img = cv2.imread('PeppersBayerGray.bmp', 0)
@@ -90,6 +101,39 @@ cv2.imwrite('rgb.jpg', rgb)
 plt.imshow(rgb), plt.title('rgb')
 plt.show()
 
-cv2.destroyAllWindows()
-
 # part II should be written here:
+
+# Convert channel type to float
+IR = IR.astype(np.float32)
+IG = IG.astype(np.float32)
+IB = IB.astype(np.float32)
+
+DR = IR - IG
+DB = IB - IG
+
+# Apply 3x3 median filter
+MR = cv2.medianBlur(DR, 3)
+MB = cv2.medianBlur(DB, 3)
+
+IRR = MR + IG
+IBB = MB + IG
+
+# Clip out out-of-bound values
+IRR = normalize(IRR)
+IBB = normalize(IBB)
+
+# merge the channels
+# Red Channel
+rgb[:, :, 0] = IRR
+# Green Channel
+rgb[:, :, 1] = IG
+# Blue Channel
+rgb[:, :, 2] = IBB
+
+
+cv2.imwrite('rgb.jpg', rgb)
+
+plt.imshow(rgb), plt.title('advanced rgb')
+plt.show()
+
+cv2.destroyAllWindows()
